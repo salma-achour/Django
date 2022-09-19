@@ -13,7 +13,6 @@ After running (`django-admin startproject 'project_name'`):
 |__ manage.py
 
 ```
-
 * `__init__.py`: This is an empty file. The function of this file is to tell the Python interpreter that this directory is a package.
 
 * `settings.py`: It contains the Django project configuration:
@@ -28,10 +27,10 @@ After running (`django-admin startproject 'project_name'`):
     The main `manage.py` commands are:
     - `runserver`: This command is used to start the test server for our web application, provided by the Django framework.
     - `makemigrations`: we use this command to apply new migrations across projects and apps that have been carried out due to the changes in the database.
-    - `migrate` This is the prior step of the makemigration command. We use this for making the changes to the modules in the database. 
+    - `migrate` This is the prior step of the *makemigration* command. We use this for making the changes to the modules in the database. 
 
 
-After running (`python anage.py startapp 'app_name'`):
+After running (`python manage.py startapp 'app_name'`):
 ```bash
 |__app_name
     |__ migrations
@@ -43,4 +42,4 @@ After running (`python anage.py startapp 'app_name'`):
     |__ tests.py
     |__ views.py
 
-```
+``` 

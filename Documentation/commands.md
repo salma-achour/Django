@@ -13,5 +13,5 @@ django-admin strartprojet 'project_name'
 
 ## Create an APP inside django project
 ```bash
-python anage.py startapp 'app_name'
+python manage.py startapp 'app_name'
 ```
