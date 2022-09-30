@@ -1,7 +1,11 @@
+from multiprocessing import context
 from django.shortcuts import redirect, render
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from .models import Room, Topic
 from .forms import RoomForm
+from django.contrib.auth.models import User
 
 #rooms = [
 #    {'id':1, 'name':'Let\'s Learn Python'},
@@ -10,6 +14,30 @@ from .forms import RoomForm
 #]
 
 # Create your views here.
+def loginPage(request):
+    if request.method == 'POST':
+        username = request.POST.get('Username')
+        password = request.POST.get('Password')
+        try:
+            user = User.objects.get(username=username)
+        except:
+            messages.error(request, 'User does not exist.')
+            
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Username or Password are incorrect!')
+        
+    context = {}
+    return render(request, "base/login_register.html", context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect('home')
+
+
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     rooms = Room.objects.filter(
