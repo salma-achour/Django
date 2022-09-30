@@ -1,6 +1,8 @@
 from multiprocessing import context
 from django.shortcuts import redirect, render
 from django.contrib import messages
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from .models import Room, Topic
@@ -15,6 +17,10 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 def loginPage(request):
+    
+    if request.user.is_authenticated:
+        return redirect('home')
+    
     if request.method == 'POST':
         username = request.POST.get('Username')
         password = request.POST.get('Password')
@@ -55,6 +61,7 @@ def room(request,pk):
     context = {'room': room}
     return  render(request, "base/room.html", context)
 
+@login_required(login_url='login')
 def create_room(request):
     form = RoomForm()
     if request.method == 'POST':
@@ -65,10 +72,15 @@ def create_room(request):
     context = {"form":form}
     return render(request, "base/room-form.html", context)
 
-
+@login_required(login_url='login')
 def update_room(request,pk):
     room = Room.objects.get(id=pk)
     form = RoomForm(instance=room) # pre-fill the form
+    
+    if request.user != room.host:
+        return HttpResponse(' You are not allowed here!')
+        
+    
     if request.method == 'POST':
         form = RoomForm(request.POST, instance=room)
         if form.is_valid():
@@ -77,9 +89,11 @@ def update_room(request,pk):
     context = {"form":form}
     return render(request, "base/room-form.html", context)
 
-
+@login_required(login_url='login')
 def delete_room(request, pk):
     room = Room.objects.get(id=pk)
+    if request.user != room.host:
+        return HttpResponse(' You are not allowed here!')
     if request.method == 'POST':
         room.delete()
         return redirect('home')
