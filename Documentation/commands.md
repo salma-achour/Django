@@ -26,6 +26,8 @@ python manage.py makemigration
 python manage.py migrate
 ```
 
+
+
 ## Create user with admin privileges
 ```bash
 python manage.py createsuperuser

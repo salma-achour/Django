@@ -30,6 +30,7 @@ After running (`django-admin startproject 'project_name'`):
     - `migrate` This is the prior step of the *makemigration* command. We use this for making the changes to the modules in the database. 
 
 
+
 After running (`python manage.py startapp 'app_name'`):
 ```bash
 |__app_name
